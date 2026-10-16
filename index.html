@@ -3,26 +3,101 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Clip Autoposter</title>
-<style>
-  body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 16px; line-height: 1.6; color: #1d1d1f; background: #fff; }
-  h1 { font-size: 28px; margin-bottom: 4px; }
-  a { color: #0a66c2; }
-  footer { margin-top: 40px; font-size: 14px; color: #666; }
-</style>
+<title>Clip Autoposter — scheduled publishing of short clips</title>
+<meta name="description" content="Clip Autoposter is a desktop tool that publishes the owner's own short video clips to the owner's TikTok, YouTube and Instagram accounts on a daily schedule.">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" href="favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>Clip Autoposter</h1>
-<p>Clip Autoposter is a personal tool that publishes short video clips, prepared by the owner, to the owner's own
-YouTube, TikTok and Instagram accounts on a fixed daily schedule.</p>
-<p>The tool runs only on the owner's computer. It is not offered to the public and does not collect data from other people.</p>
-<p><b>This app uses YouTube API Services.</b> By using its YouTube features you agree to the
-<a href="https://www.youtube.com/t/terms">YouTube Terms of Service</a>. See also the
-<a href="https://policies.google.com/privacy">Google Privacy Policy</a>.</p>
-<ul>
-  <li><a href="privacy.html">Privacy Policy</a></li>
-  <li><a href="terms.html">Terms of Service</a></li>
-</ul>
-<footer>Contact: <a href="mailto:k.a.zhura29@gmail.com">k.a.zhura29@gmail.com</a></footer>
+<header class="site"><div class="wrap">
+  <a class="brand" href="./"><img src="logo-256.png" alt="Clip Autoposter icon">Clip Autoposter</a>
+  <nav>
+    <a href="#features">Features</a>
+    <a href="#how">How it works</a>
+    <a href="#tiktok">TikTok</a>
+    <a href="#faq">FAQ</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <img src="logo-256.png" alt="Clip Autoposter icon">
+    <div>
+      <h1>Publish your own clips on schedule, without manual uploads</h1>
+      <p>Clip Autoposter is a desktop tool for Windows. It takes short vertical clips that the owner has edited,
+      and publishes them one part at a time to the owner's own TikTok, YouTube and Instagram accounts at fixed
+      times of the day.</p>
+    </div>
+  </div>
+
+  <section id="features">
+    <h2>Features</h2>
+    <div class="grid">
+      <div class="card"><h3>Daily time slots</h3><p>Up to four publications per day per account, at times the owner chooses (for example 13:30, 15:45, 17:15, 19:30).</p></div>
+      <div class="card"><h3>Parts in order</h3><p>Clips are numbered "Part 1, Part 2…". The tool always publishes the next part that is not yet on the account.</p></div>
+      <div class="card"><h3>No duplicates</h3><p>Before every run it reads the list of videos already on the account, so a part posted manually or before a restart is never posted twice.</p></div>
+      <div class="card"><h3>Captions and hashtags</h3><p>Caption "Series name Part N", the series hashtags and general hashtags are added automatically from a settings file.</p></div>
+      <div class="card"><h3>Safe recovery</h3><p>If the computer or the connection fails during an upload, the next run checks the account and either marks the part as published or publishes it again.</p></div>
+      <div class="card"><h3>One account per series</h3><p>Each series has its own account on each platform; the owner connects every account once through the platform's official login.</p></div>
+    </div>
+  </section>
+
+  <section id="how">
+    <h2>How it works</h2>
+    <ol class="steps">
+      <li><b>Prepare clips.</b> The owner puts edited vertical clips (MP4, 9:16) into one folder per series, for example <i>Series name Part 1.mp4</i>.</li>
+      <li><b>Connect accounts.</b> For every series and platform the owner signs in once through the platform's official authorization page (TikTok Login Kit, Google OAuth, Instagram Login). The tool keeps only the access token on the owner's computer.</li>
+      <li><b>Run on schedule.</b> Windows Task Scheduler starts the tool every 15 minutes. When a time slot comes, the tool publishes the next part to each account.</li>
+      <li><b>Check results.</b> Every action is written to a local log file; a status panel shows what was published today, what is next, and any errors.</li>
+    </ol>
+  </section>
+
+  <section id="tiktok">
+    <h2>TikTok integration</h2>
+    <p>Clip Autoposter uses only the official TikTok for Developers APIs:</p>
+    <table>
+      <tr><th>Product / scope</th><th>What the tool does with it</th></tr>
+      <tr><td>Login Kit — <code>user.info.basic</code></td><td>The owner signs in to the TikTok account of a series; the tool shows which account is connected.</td></tr>
+      <tr><td>Content Posting API, Direct Post — <code>video.publish</code></td><td>Publishes the next clip with its caption. Before each post it reads the creator info (allowed privacy levels, posting limits) and respects them.</td></tr>
+      <tr><td>Content Posting API — <code>video.upload</code></td><td>Uploads the video file in chunks as part of the Direct Post flow.</td></tr>
+      <tr><td>Display API — <code>video.list</code></td><td>Reads the titles of videos already on the account, so the same part is not published twice.</td></tr>
+    </table>
+    <p>The tool does not read followers, messages, comments or any data of other users, and posts only to accounts its owner has connected.</p>
+  </section>
+
+  <section id="platforms">
+    <h2>Supported platforms</h2>
+    <div class="grid">
+      <div class="card"><h3>TikTok</h3><p>Direct Post to the connected account at each time slot.</p></div>
+      <div class="card"><h3>YouTube Shorts</h3><p>Uploads through YouTube API Services with scheduled publishing time.</p></div>
+      <div class="card"><h3>Instagram Reels</h3><p>Publishes Reels through the Instagram API with Instagram Login.</p></div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <h2>FAQ</h2>
+    <details><summary>Who can use Clip Autoposter?</summary><p>It is a personal tool. It runs on its owner's computer and publishes only to accounts that the owner connected. It is not sold or offered as a hosted service.</p></details>
+    <details><summary>Does it change or delete existing videos?</summary><p>No. It only publishes new clips and reads the titles of existing videos to avoid duplicates.</p></details>
+    <details><summary>Where are access tokens stored?</summary><p>In files on the owner's computer only. See the <a href="privacy.html">Privacy Policy</a> for details and how to revoke access.</p></details>
+    <details><summary>What if the computer was off at a time slot?</summary><p>A slot missed by more than 40 minutes is skipped, so clips are never published in a burst.</p></details>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Questions about the tool, data or access: <a href="mailto:k.a.zhura29@gmail.com">k.a.zhura29@gmail.com</a></p>
+    <p><b>This app uses YouTube API Services.</b> By using its YouTube features you agree to the
+    <a href="https://www.youtube.com/t/terms">YouTube Terms of Service</a>; see also the
+    <a href="https://policies.google.com/privacy">Google Privacy Policy</a>.</p>
+  </section>
+</main>
+
+<footer class="site"><div class="wrap">
+  <span>© 2026 Clip Autoposter</span>
+  <span><a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Service</a> · <a href="mailto:k.a.zhura29@gmail.com">Contact</a></span>
+</div></footer>
 </body>
 </html>
